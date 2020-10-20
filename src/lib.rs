@@ -1,4 +1,4 @@
-mod sniper {
+pub mod sniper {
     //To deserialize snippets from file(s)
     use serde::Deserialize;
     use std::clone::Clone;
@@ -63,7 +63,6 @@ mod sniper {
     pub struct Sniper {
         config: PathBuf,
         language: String,
-        target: PathBuf,
         snippets: radix_trie::Trie<String, Snippet>,
         enabled_conditionals: HashSet<String>,
     }
@@ -73,12 +72,11 @@ mod sniper {
             Self {
                 config: PathBuf::from(config_path),
                 language: String::new(),
-                target: PathBuf::new(),
                 snippets: Trie::new(),
                 enabled_conditionals: HashSet::new(),
             }
         }
-        pub fn set_target(&mut self, target_file: &str) {
+        /*pub fn set_target(&mut self, target_file: &str) {
             self.target = PathBuf::from(target_file);
 
             if let Some(suffix) = self.target.extension() {
@@ -90,8 +88,8 @@ mod sniper {
             } else {
                 self.set_language("undefined")
             }
-        }
-        fn set_language(&mut self, language: &str) {
+        }*/
+        pub fn set_language(&mut self, language: &str) {
             self.language = language.to_string();
             if language == "unsupported" {
                 //TODO: define some way to tell everything to stop
@@ -170,7 +168,7 @@ mod tests {
             //NOTE: snippets were originally in ~/.config but move to repo
             //for others to have some snippets to test with
             let mut sniper = sniper::Sniper::new(&format!("{}{}", path, "/snippets/"));
-            sniper.set_target("temp.py");
+            sniper.set_language("python");
             //let snippets: RefCell<Vec<Snippets>> = RefCell::new(vec![]);
             //sniper.walk(|n|snippets.borrow_mut().push(n.clone()));
             let if_snip = sniper.get("if");
