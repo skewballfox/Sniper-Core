@@ -62,7 +62,7 @@ pub mod sniper {
     #[derive(Debug)]
     pub struct Sniper {
         config: PathBuf,
-        language: String,
+        pub language: String,
         snippets: radix_trie::Trie<String, Snippet>,
         enabled_conditionals: HashSet<String>,
     }
