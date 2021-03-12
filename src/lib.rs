@@ -163,11 +163,17 @@ mod tests {
         println!("running test");
         use super::sniper;
         use std::env;
-        if let Some(path) = env::current_dir().unwrap().to_str() {
-            println!("{:?}", path);
+        let mut dir = env::current_exe().unwrap();
+        dir.pop();
+        dir.pop();
+        dir.pop();
+        dir.pop();
+        {
+            println!("{:?}", dir.to_str());
             //NOTE: snippets were originally in ~/.config but move to repo
             //for others to have some snippets to test with
-            let mut sniper = sniper::Sniper::new(&format!("{}{}", path, "/snippets/"));
+            let mut sniper =
+                sniper::Sniper::new(&format!("{}{}", dir.to_str().unwrap(), "/snippets/"));
             sniper.set_language("python");
             //let snippets: RefCell<Vec<Snippets>> = RefCell::new(vec![]);
             //sniper.walk(|n|snippets.borrow_mut().push(n.clone()));
