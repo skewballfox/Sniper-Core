@@ -5,7 +5,7 @@ pub mod sniper {
     use std::fs;
     use std::path::PathBuf;
     use toml;
-    //TODO: benchmark radix_trie vs qp-trie
+    //TODO: switch to dashmap, separate into two separate maps
     use radix_trie::Trie;
     use std::collections::HashSet;
 
@@ -61,6 +61,7 @@ pub mod sniper {
 
     #[derive(Debug)]
     pub struct Sniper {
+        //TODO: since config is now static, switch to passing sessions
         config: PathBuf,
         pub language: String,
         snippets: radix_trie::Trie<String, Snippet>,
@@ -68,7 +69,7 @@ pub mod sniper {
     }
 
     impl Sniper {
-        pub fn new(config_path: &str) -> Self {
+        pub fn new(config) -> Self {
             Self {
                 config: PathBuf::from(config_path),
                 language: String::new(),
@@ -98,7 +99,7 @@ pub mod sniper {
                 //TODO: set up some way of loading all templates for all languages and nothing else
                 self.load("nope")
             } else {
-                let templates_dir = self.config.join(self.language.clone()).join("templates");
+                let templatesjoin("templates")_dir = self.config.join(self.language.clone()).;
                 if templates_dir.is_dir() {
                     for entry in fs::read_dir(templates_dir).expect("unable to list") {
                         let entry = entry.expect("unable to get entry");
@@ -163,6 +164,7 @@ mod tests {
         println!("running test");
         use super::sniper;
         use std::env;
+        //TODO: switch to using snippets located in $HOME/.config/sniper
         let mut dir = env::current_exe().unwrap();
         dir.pop();
         dir.pop();
